@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CENTRAL·ATENDE — Sistema de Atendimento</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<style>
+/* ── Modernist Design System tokens ── */
+:root {
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201e1d;
+  --color-accent: #ec3013;
+  --color-accent-2: #e15b47;
+  --color-divider: color-mix(in srgb, #201e1d 40%, transparent);
+  --color-neutral-100: #f8f4f4;
+  --color-neutral-200: #eae7e7;
+  --color-neutral-300: #d7d3d3;
+  --color-neutral-400: #bab6b6;
+  --color-neutral-500: #9b9797;
+  --color-neutral-600: #7d7979;
+  --color-neutral-700: #605d5d;
+  --color-neutral-800: #444141;
+  --color-neutral-900: #2d2b2b;
+  --color-accent-100: #fff2ef;
+  --color-accent-200: #ffe0d9;
+  --color-accent-300: #ffc4b8;
+  --color-accent-400: #ff9783;
+  --color-accent-500: #ff563c;
+  --color-accent-600: #dd2b0f;
+  --color-accent-700: #ae1800;
+  --color-accent-800: #7c1405;
+  --color-accent-900: #4d170e;
+  --color-accent-2-100: #fff2ef;
+  --color-accent-2-200: #ffe0da;
+  --color-accent-2-300: #ffc4b9;
+  --color-accent-2-400: #ff9784;
+  --color-accent-2-500: #ef6853;
+  --color-accent-2-600: #c94b39;
+  --color-accent-2-700: #9e3526;
+  --color-accent-2-800: #71261b;
+  --color-accent-2-900: #471d16;
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-heading-weight: 800;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px;
+  --space-4: 16px; --space-6: 24px; --space-8: 32px;
+  --radius-sm: 0px; --radius-md: 0px; --radius-lg: 0px;
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); font-size: 15px; line-height: 1.55; font-weight: 400; }
+h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2); }
+h1{font-size:42px} h2{font-size:32px} h3{font-size:25px} h4{font-size:20px} h5{font-size:16px}
+h6{font-size:13px;letter-spacing:0.08em;text-transform:uppercase}
+p{margin:0 0 var(--space-3)}
+a{color:var(--color-accent);text-underline-offset:3px}
+img{display:block;max-width:100%}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+::selection{background:color-mix(in srgb,var(--color-accent) 30%,transparent)}
+.text-muted{color:color-mix(in srgb,var(--color-text) 55%,transparent)}
+.hr{height:2px;border:0;margin:var(--space-4) 0;background:var(--color-divider)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;text-decoration:none;font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:14px;line-height:1.2;color:var(--color-text);background:transparent;border:1px solid transparent;padding:var(--space-2) calc(var(--space-3)*1.2);border-radius:var(--radius-md)}
+.btn svg{display:block}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--color-accent);color:var(--color-bg)}
+.btn-primary:hover{background:var(--color-accent-600)}
+.btn-primary:active{background:var(--color-accent-700)}
+.btn-secondary{border-color:var(--color-divider)}
+.btn-secondary:hover{background:color-mix(in srgb,var(--color-text) 7%,transparent)}
+.btn-ghost{color:var(--color-accent);padding-inline:var(--space-1)}
+.btn-ghost:hover{background:color-mix(in srgb,var(--color-accent) 10%,transparent)}
+.btn-icon{width:36px;height:36px;padding:0}
+.btn-block{width:100%;margin-top:var(--space-2);justify-content:flex-start;text-align:left}
+/* forms */
+.field>label{display:block;font-size:12px;margin-bottom:5px;color:color-mix(in srgb,var(--color-text) 70%,transparent)}
+.input{width:100%;min-height:36px;padding:6px 10px;font:inherit;font-size:14px;color:var(--color-text);caret-color:var(--color-accent);background:var(--color-surface);border:1px solid var(--color-divider);border-radius:var(--radius-md)}
+.input:hover{border-color:color-mix(in srgb,var(--color-text) 45%,transparent)}
+.input:focus-visible{border-color:var(--color-accent);outline-offset:0}
+textarea.input{min-height:90px;resize:vertical}
+.seg{display:inline-flex;overflow:hidden;border:1px solid var(--color-divider);border-radius:var(--radius-md)}
+.seg-opt{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;font-size:13px;cursor:pointer}
+.seg-opt+.seg-opt{border-left:1px solid var(--color-divider)}
+/* cards */
+.card{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-3);border-radius:var(--radius-md);background:var(--color-surface)}
+.card-kicker{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent)}
+.card-title{font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:17px;line-height:1.2}
+.card-body{margin:0;font-size:13px;opacity:.8;flex:1}
+.card-meta{display:flex;align-items:center;gap:6px;font-size:11px;color:color-mix(in srgb,var(--color-text) 50%,transparent)}
+.elev-sm{box-shadow:var(--shadow-sm)}
+.elev-md{box-shadow:var(--shadow-md)}
+/* tags */
+.tag{display:inline-flex;align-items:center;font-size:11px;letter-spacing:.02em;padding:3px 10px}
+.tag-accent{background:var(--color-accent-100);color:var(--color-accent-800)}
+.tag-accent-2{background:var(--color-accent-2-100);color:var(--color-accent-2-800)}
+.tag-neutral{background:var(--color-neutral-100);color:var(--color-neutral-800)}
+.tag-outline{border:1px solid var(--color-accent);color:var(--color-accent)}
+/* nav */
+.nav{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-4);border-bottom:2px solid var(--color-divider)}
+.nav-brand{font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:18px;margin-right:auto}
+/* table */
+.table{width:100%;border-collapse:collapse;font-size:14px}
+.table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--color-text) 60%,transparent);padding:var(--space-2);border-bottom:2px solid var(--color-divider)}
+.table td{padding:var(--space-2);border-bottom:1px solid var(--color-divider)}
+.table tbody tr:hover{background:color-mix(in srgb,var(--color-text) 4%,transparent)}
+/* dialog */
+.dialog-backdrop{position:fixed;inset:0;display:grid;place-items:center;padding:var(--space-4);background:color-mix(in srgb,var(--color-neutral-900) 50%,transparent);z-index:100}
+.dialog{width:min(440px,100%);display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-4);background:var(--color-surface);box-shadow:var(--shadow-lg)}
+.dialog-title{font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:20px}
+.dialog-body{font-size:14px;opacity:.85}
+.dialog-actions{display:flex;justify-content:flex-end;gap:var(--space-2);margin-top:var(--space-2)}
+/* scroll */
+.scr::-webkit-scrollbar{width:10px;height:10px}
+.scr::-webkit-scrollbar-thumb{background:var(--color-neutral-300)}
+/* animation */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fade{animation:fadeUp .28s ease both}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const {useState, useCallback} = React;
+const e = React.createElement;
+
+/* ── SVG icons ── */
+const IcoArrow = () => e('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M5 12h14'}),e('path',{d:'m12 5 7 7-7 7'}));
+const IcoBell = () => e('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9'}),e('path',{d:'M10.3 21a1.94 1.94 0 0 0 3.4 0'}));
+const IcoCheck = () => e('svg',{width:20,height:20,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2.5,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M20 6 9 17l-5-5'}));
+const IcoPlus = () => e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M5 12h14M12 5v14'}));
+const IcoPaperclip = () => e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48'}));
+const IcoFile = () => e('svg',{width:15,height:15,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z'}),e('path',{d:'M14 2v5h5'}));
+const IcoSend = () => e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'m22 2-7 20-4-9-9-4Z'}),e('path',{d:'M22 2 11 13'}));
+const IcoBot = () => e('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('rect',{x:4,y:8,width:16,height:12}),e('path',{d:'M12 4v4M9 2h6M8 13h.01M16 13h.01M9 17h6'}));
+const IcoDownload = () => e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'}),e('path',{d:'m7 10 5 5 5-5'}),e('path',{d:'M12 15V3'}));
+const IcoSearch = () => e('svg',{style:{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',color:'color-mix(in srgb,var(--color-text) 45%,transparent)'},width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('circle',{cx:11,cy:11,r:8}),e('path',{d:'m21 21-4.3-4.3'}));
+const IcoWarn = () => e('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z'}),e('path',{d:'M12 9v4M12 17h.01'}));
+const IcoArrowRight = () => e('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M14.5 3.5 21 10l-6.5 6.5'}),e('path',{d:'M3 10h18'}),e('path',{d:'M3 14h11'}));
+
+/* ── Static data ── */
+const CHAMADOS = [
+  {id:2041,titulo:'Não consigo acessar o e-mail corporativo',categoria:'Acesso e Contas',setor:'Tecnologia da Informação',prioridade:'Alta',status:'Em atendimento',data:'22/07/2026',resp:'João Nogueira'},
+  {id:2038,titulo:'Solicitação de acesso ao sistema financeiro',categoria:'Acesso e Contas',setor:'Financeiro',prioridade:'Média',status:'Aguardando',data:'21/07/2026',resp:'—'},
+  {id:2032,titulo:'Impressora do 3º andar sem toner',categoria:'Infraestrutura',setor:'Infraestrutura',prioridade:'Baixa',status:'Resolvido',data:'19/07/2026',resp:'Camila Torres'},
+  {id:2025,titulo:'Erro ao emitir nota fiscal eletrônica',categoria:'Sistemas',setor:'Financeiro',prioridade:'Alta',status:'Encerrado',data:'17/07/2026',resp:'Rafael Duarte'}
+];
+const FILA = [
+  {id:2047,titulo:'Sistema de ponto não registra saída',solicitante:'Bruno Carvalho',prioridade:'Alta',status:'Aberto',tempo:'8 min',triagem:'Sem sugestão'},
+  {id:2046,titulo:'VPN cai a cada 10 minutos',solicitante:'Letícia Ramos',prioridade:'Alta',status:'Em triagem',tempo:'23 min',triagem:'Sugestão do Bot'},
+  {id:2045,titulo:'Solicito instalação do Power BI',solicitante:'Diego Souza',prioridade:'Baixa',status:'Aberto',tempo:'41 min',triagem:'Sugestão do Bot'},
+  {id:2044,titulo:'Notebook não liga após atualização',solicitante:'Fernanda Lima',prioridade:'Média',status:'Aberto',tempo:'1 h 05',triagem:'Sem sugestão'},
+  {id:2041,titulo:'Não consigo acessar o e-mail corporativo',solicitante:'Marina Alves',prioridade:'Alta',status:'Em atendimento',tempo:'2 h 12',triagem:'Sugestão do Bot'},
+  {id:2039,titulo:'Teclado com teclas travando',solicitante:'Otávio Pires',prioridade:'Baixa',status:'Em atendimento',tempo:'3 h 40',triagem:'Sem sugestão'}
+];
+const USUARIOS = [
+  {nome:'João Nogueira',email:'joao.nogueira@empresa.com.br',perfil:'Chefe do Setor',setor:'TI',status:'Ativo'},
+  {nome:'Marcos Vinícius',email:'marcos.v@empresa.com.br',perfil:'Atendente da Equipe',setor:'TI',status:'Ativo'},
+  {nome:'Aline Ferreira',email:'aline.ferreira@empresa.com.br',perfil:'Atendente da Equipe',setor:'TI',status:'Ativo'},
+  {nome:'Rafael Duarte',email:'rafael.duarte@empresa.com.br',perfil:'Chefe do Setor',setor:'FIN',status:'Ativo'},
+  {nome:'Marina Alves',email:'marina.alves@empresa.com.br',perfil:'Solicitante',setor:'—',status:'Ativo'}
+];
+const CATEGORIAS = ['Acesso e Contas','Hardware','Software / Sistemas','Rede e Conectividade','Infraestrutura','Outros'];
+const SETOR_OPCOES = ['Tecnologia da Informação','Recursos Humanos','Financeiro','Infraestrutura'];
+const SETORES_INIT = [
+  {nome:'Tecnologia da Informação',sigla:'TI',chefe:'João Nogueira',usuarios:8,status:'Ativo'},
+  {nome:'Recursos Humanos',sigla:'RH',chefe:'Patrícia Lemos',usuarios:5,status:'Ativo'},
+  {nome:'Financeiro',sigla:'FIN',chefe:'Rafael Duarte',usuarios:6,status:'Ativo'},
+  {nome:'Infraestrutura',sigla:'INF',chefe:'Camila Torres',usuarios:4,status:'Ativo'},
+  {nome:'Atendimento ao Cliente',sigla:'AC',chefe:'—',usuarios:0,status:'Inativo'}
+];
+const NAV_GROUPS = [
+  {perfil:'Solicitante',items:[
+    {id:'login',nome:'Login'},{id:'cadastro',nome:'Criar Conta'},
+    {id:'abrir',nome:'Abrir Chamado'},
+    {id:'meus',nome:'Meus Chamados'},{id:'abrir_m',nome:'Abrir Chamado · Mobile'},
+    {id:'meus_m',nome:'Meus Chamados · Mobile'}
+  ]},
+  {perfil:'Atendente · Chefe do Setor',items:[
+    {id:'fila',nome:'Fila de Atendimento'},{id:'detalhe',nome:'Detalhe do Chamado'}
+  ]},
+  {perfil:'Administrador Geral',items:[{id:'admin',nome:'Setores e Usuários'}]},
+  {perfil:'Relatórios',items:[{id:'relatorio',nome:'Emitir Relatório'}]}
+];
+const TITULOS = {
+  login:['Solicitante','Acesso ao sistema'],
+  cadastro:['Solicitante','Criar Conta'],
+  abrir:['Solicitante','Abrir Chamado'],
+  meus:['Solicitante','Meus Chamados'],
+  abrir_m:['Solicitante · Mobile','Abrir Chamado'],
+  meus_m:['Solicitante · Mobile','Meus Chamados'],
+  fila:['Atendente da Equipe','Fila de Atendimento'],
+  detalhe:['Atendente da Equipe','Detalhe do Chamado'],
+  admin:['Administrador Geral','Setores e Usuários'],
+  relatorio:['Chefe do Setor','Emitir Relatório']
+};
+
+function statusTag(s){
+  if(s==='Em atendimento') return 'tag-accent';
+  if(s==='Em triagem') return 'tag-accent-2';
+  if(s==='Aberto') return 'tag-outline';
+  return 'tag-neutral';
+}
+function prioTag(p){
+  if(p==='Alta') return 'tag-accent';
+  if(p==='Média') return 'tag-accent-2';
+  return 'tag-neutral';
+}
+
+/* ══════════════ SCREENS ══════════════ */
+
+function ScreenLogin({onEnter,onGoCadastro,onVisitante}){
+  return e('div',{className:'fade',style:{minHeight:'100%',display:'grid',gridTemplateColumns:'1fr 1fr'}},
+    /* left */
+    e('div',{style:{display:'grid',placeItems:'center',padding:48}},
+      e('div',{style:{width:'100%',maxWidth:360}},
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:24,letterSpacing:'-0.02em'}},
+          'CENTRAL',e('span',{style:{color:'var(--color-accent)'}},'·'),'ATENDE'),
+        e('hr',{className:'hr',style:{margin:'20px 0'}}),
+        e('h2',{style:{margin:'0 0 6px'}},'Efetuar Login'),
+        e('p',{className:'text-muted',style:{fontSize:14,marginBottom:24}},'Acesse com suas credenciais corporativas para abrir e acompanhar chamados.'),
+        e('div',{className:'field',style:{marginBottom:16}},
+          e('label',null,'E-mail corporativo'),
+          e('input',{className:'input',type:'email',defaultValue:'marina.alves@empresa.com.br',readOnly:true})),
+        e('div',{className:'field',style:{marginBottom:8}},
+          e('label',null,'Senha'),
+          e('input',{className:'input',type:'password',placeholder:'••••••••'})),
+        e('div',{style:{display:'flex',justifyContent:'flex-end',marginBottom:20}},
+          e('a',{href:'#',style:{fontSize:12}},'Esqueci minha senha')),
+        e('button',{className:'btn btn-primary btn-block',onClick:onEnter,style:{justifyContent:'space-between'}},
+          'Entrar',e(IcoArrow)),
+        e('div',{style:{display:'flex',alignItems:'center',gap:12,margin:'16px 0 0'}},
+          e('div',{style:{flex:1,height:1,background:'var(--color-divider)'}}),
+          e('span',{style:{fontSize:12,color:'color-mix(in srgb,var(--color-text) 45%,transparent)',whiteSpace:'nowrap'}},'ou'),
+          e('div',{style:{flex:1,height:1,background:'var(--color-divider)'}})),
+        e('button',{className:'btn btn-secondary btn-block',onClick:onVisitante,style:{justifyContent:'space-between',marginTop:12}},
+          e('span',null,
+            e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round',style:{display:'inline-block',verticalAlign:'middle',marginRight:8}},
+              e('path',{d:'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'}),
+              e('circle',{cx:12,cy:7,r:4})),
+            'Acessar como visitante'),
+          e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},
+            e('path',{d:'M5 12h14'}),
+            e('path',{d:'m12 5 7 7-7 7'}))),
+        e('p',{style:{fontSize:12,textAlign:'center',marginTop:20,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},
+          'Não tem uma conta? ',e('a',{href:'#',onClick:ev=>{ev.preventDefault();onGoCadastro();}},e('strong',null,'Criar conta'))))),
+    /* right */
+    e('div',{style:{background:'var(--color-accent)',color:'var(--color-bg)',padding:'56px 48px',display:'flex',flexDirection:'column',justifyContent:'space-between'}},
+      e('div',{style:{fontSize:11,letterSpacing:'0.12em',textTransform:'uppercase',opacity:.85}},'Sistema de Atendimento'),
+      e('div',null,
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:44,lineHeight:1.02,letterSpacing:'-0.02em'}},'Registre.\nAcompanhe.\nResolva.'.split('\n').flatMap((t,i,a)=>[t,i<a.length-1?e('br',{key:i}):null])),
+        e('p',{style:{fontSize:15,opacity:.9,marginTop:20,maxWidth:'34ch'}},'Abra um chamado em segundos. A triagem automatizada sugere uma solução antes mesmo de um atendente assumir.')),
+      e('div',{style:{display:'flex',gap:32,fontSize:13}},
+        e('div',null,e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:28}},'1.240'),e('div',{style:{opacity:.85}},'chamados/mês')),
+        e('div',null,e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:28}},'63%'),e('div',{style:{opacity:.85}},'resolvidos na triagem')))));
+}
+
+function ScreenCadastro({onGoLogin}){
+  const [form,setForm] = useState({nome:'',email:'',setor:'',perfil:'Solicitante',senha:'',confirmar:''});
+  const [errors,setErrors] = useState({});
+  const [concluido,setConcluido] = useState(false);
+  const set = k => ev => setForm(f=>({...f,[k]:ev.target.value}));
+
+  const cadastrar = () => {
+    const err={};
+    if(!form.nome.trim()) err.nome=true;
+    if(!form.email.trim()||!form.email.includes('@')) err.email=true;
+    if(!form.setor) err.setor=true;
+    if(form.senha.length<6) err.senha=true;
+    if(form.senha!==form.confirmar) err.confirmar=true;
+    if(Object.keys(err).length){setErrors(err);return;}
+    setErrors({});
+    setConcluido(true);
+  };
+
+  const inputStyle = k => ({...(errors[k]?{borderColor:'var(--color-accent)'}:{})});
+
+  if(concluido) return e('div',{className:'fade',style:{minHeight:'100%',display:'grid',placeItems:'center',padding:48}},
+    e('div',{style:{width:'100%',maxWidth:420,textAlign:'center'}},
+      e('div',{style:{width:56,height:56,background:'var(--color-accent)',color:'var(--color-bg)',display:'grid',placeItems:'center',margin:'0 auto 20px'}},
+        e('svg',{width:28,height:28,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2.5,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M20 6 9 17l-5-5'}))),
+      e('h2',{style:{margin:'0 0 8px'}},'Cadastro realizado!'),
+      e('p',{className:'text-muted',style:{fontSize:14,marginBottom:28}},'Sua conta foi criada com sucesso. Um e-mail de confirmação foi enviado para ',e('strong',null,form.email),'. Verifique sua caixa de entrada para ativar o acesso.'),
+      e('button',{className:'btn btn-primary btn-block',onClick:onGoLogin,style:{justifyContent:'center',marginTop:0}},'Ir para o Login')));
+
+  return e('div',{className:'fade',style:{minHeight:'100%',display:'grid',gridTemplateColumns:'1fr 1fr'}},
+    /* esquerda — formulário */
+    e('div',{style:{display:'grid',placeItems:'center',padding:48}},
+      e('div',{style:{width:'100%',maxWidth:380}},
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:24,letterSpacing:'-0.02em'}},
+          'CENTRAL',e('span',{style:{color:'var(--color-accent)'}},'·'),'ATENDE'),
+        e('hr',{className:'hr',style:{margin:'20px 0'}}),
+        e('h2',{style:{margin:'0 0 4px'}},'Criar Conta'),
+        e('p',{className:'text-muted',style:{fontSize:14,marginBottom:24}},'Preencha os dados abaixo para solicitar acesso ao sistema.'),
+
+        Object.keys(errors).length>0 && e('div',{style:{border:'1px solid var(--color-accent)',background:'var(--color-accent-100)',color:'var(--color-accent-800)',padding:'10px 14px',marginBottom:18,display:'flex',gap:8,alignItems:'center',fontSize:13}},
+          e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z'}),e('path',{d:'M12 9v4M12 17h.01'})),
+          'Corrija os campos destacados antes de continuar.'),
+
+        e('div',{className:'field',style:{marginBottom:14}},
+          e('label',null,'Nome completo ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+          e('input',{className:'input',placeholder:'Ex.: Marina Alves',value:form.nome,onChange:set('nome'),style:inputStyle('nome')}),
+          errors.nome&&e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:4}},'Informe seu nome completo.')),
+
+        e('div',{className:'field',style:{marginBottom:14}},
+          e('label',null,'E-mail corporativo ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+          e('input',{className:'input',type:'email',placeholder:'Ex.: seu.nome@empresa.com.br',value:form.email,onChange:set('email'),style:inputStyle('email')}),
+          errors.email&&e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:4}},'Informe um e-mail válido.')),
+
+        e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:14}},
+          e('div',{className:'field'},
+            e('label',null,'Setor ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+            e('select',{className:'input',value:form.setor,onChange:set('setor'),style:inputStyle('setor')},
+              e('option',{value:''},'Selecione…'),
+              SETOR_OPCOES.map(o=>e('option',{key:o,value:o},o))),
+            errors.setor&&e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:4}},'Selecione um setor.')),
+          e('div',{className:'field'},
+            e('label',null,'Perfil de acesso'),
+            e('select',{className:'input',value:form.perfil,onChange:set('perfil')},
+              ['Solicitante','Atendente da Equipe','Chefe do Setor'].map(p=>e('option',{key:p,value:p},p))))),
+
+        e('div',{className:'field',style:{marginBottom:14}},
+          e('label',null,'Senha ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+          e('input',{className:'input',type:'password',placeholder:'Mínimo 6 caracteres',value:form.senha,onChange:set('senha'),style:inputStyle('senha')}),
+          errors.senha&&e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:4}},'A senha deve ter no mínimo 6 caracteres.')),
+
+        e('div',{className:'field',style:{marginBottom:22}},
+          e('label',null,'Confirmar senha ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+          e('input',{className:'input',type:'password',placeholder:'Repita a senha',value:form.confirmar,onChange:set('confirmar'),style:inputStyle('confirmar')}),
+          errors.confirmar&&e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:4}},'As senhas não coincidem.')),
+
+        e('button',{className:'btn btn-primary btn-block',onClick:cadastrar,style:{justifyContent:'space-between',marginTop:0}},
+          'Criar conta',
+          e('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M5 12h14'}),e('path',{d:'m12 5 7 7-7 7'}))),
+        e('p',{style:{fontSize:12,textAlign:'center',marginTop:18,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},
+          'Já tem uma conta? ',e('a',{href:'#',onClick:ev=>{ev.preventDefault();onGoLogin();}},'Entrar')))),
+    /* direita — informativo */
+    e('div',{style:{background:'var(--color-text)',color:'var(--color-bg)',padding:'56px 48px',display:'flex',flexDirection:'column',justifyContent:'space-between'}},
+      e('div',{style:{fontSize:11,letterSpacing:'0.12em',textTransform:'uppercase',opacity:.6}},'Novo usuário'),
+      e('div',null,
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:38,lineHeight:1.05,letterSpacing:'-0.02em'}},'Seu acesso,\nsua equipe,\nseu chamado.'.split('\n').flatMap((t,i,a)=>[t,i<a.length-1?e('br',{key:i}):null])),
+        e('hr',{style:{height:2,border:0,background:'color-mix(in srgb,#fff 20%,transparent)',margin:'28px 0'}}),
+        e('div',{style:{display:'flex',flexDirection:'column',gap:16}},
+          [['01','Preencha o formulário com seus dados corporativos.'],
+           ['02','Aguarde a aprovação do administrador do setor.'],
+           ['03','Receba o e-mail de ativação e acesse o sistema.']].map(([n,t])=>
+            e('div',{key:n,style:{display:'flex',gap:14,alignItems:'flex-start'}},
+              e('div',{style:{width:28,height:28,flexShrink:0,border:'1.5px solid color-mix(in srgb,#fff 35%,transparent)',display:'grid',placeItems:'center',fontSize:11,fontWeight:800,fontFamily:'var(--font-heading)',opacity:.8}},n),
+              e('p',{style:{margin:0,fontSize:14,opacity:.85,lineHeight:1.5}},t))))),
+      e('p',{style:{fontSize:12,opacity:.5,margin:0}},'Acesso sujeito a aprovação do administrador geral.')));
+}
+
+function ScreenAbrir({onGoMeus,visitante}){
+  const [form,setForm] = useState({titulo:'',categoria:'',setor:'Tecnologia da Informação',prioridade:'media',descricao:'',emailNotif:''});
+  const [errors,setErrors] = useState({});
+  const [enviado,setEnviado] = useState(false);
+  const [protocolo,setProtocolo] = useState('');
+  const [botResposta,setBotResposta] = useState(null);
+  const [anexos,setAnexos] = useState([]);
+
+  const setField = k => ev => setForm(f=>({...f,[k]:ev.target.value}));
+  const enviar = () => {
+    const err={};
+    if(!form.titulo.trim()) err.titulo=true;
+    if(!form.categoria) err.categoria=true;
+    if(!form.descricao.trim()) err.descricao=true;
+    if(visitante && (!form.emailNotif.trim()||!form.emailNotif.includes('@'))) err.emailNotif=true;
+    if(Object.keys(err).length){setErrors(err);return;}
+    setErrors({});
+    setProtocolo('#'+(2050+Math.floor(Math.random()*40)));
+    setEnviado(true);
+  };
+  const reset = ()=>{setEnviado(false);setBotResposta(null);setAnexos([]);setForm({titulo:'',categoria:'',setor:'Tecnologia da Informação',prioridade:'media',descricao:''});};
+
+  if(enviado) return e('div',{className:'fade',style:{maxWidth:1080,margin:'0 auto',padding:'28px 28px 56px'}},
+    e('div',{style:{display:'grid',gridTemplateColumns:'1.1fr .9fr',gap:24,alignItems:'start'}},
+      e('div',null,
+        e('div',{style:{border:'2px solid var(--color-accent)',background:'var(--color-accent-100)',padding:'20px 22px',display:'flex',gap:14,alignItems:'flex-start'}},
+          e('div',{style:{width:36,height:36,flexShrink:0,background:'var(--color-accent)',color:'var(--color-bg)',display:'grid',placeItems:'center'}},e(IcoCheck)),
+          e('div',null,
+            e('h4',{style:{margin:'0 0 4px'}},'Chamado registrado com sucesso'),
+            e('p',{style:{margin:0,fontSize:14}},'Protocolo ',e('strong',null,protocolo),' · a triagem automatizada foi iniciada.'),
+            visitante && e('p',{style:{margin:'8px 0 0',fontSize:13,display:'flex',alignItems:'center',gap:6,color:'color-mix(in srgb,var(--color-text) 70%,transparent)'}},
+              e('svg',{width:13,height:13,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('rect',{width:20,height:16,x:2,y:4,rx:2}),e('path',{d:'m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'})),
+              'Atualizações serão enviadas para ',e('strong',{style:{color:'var(--color-text)'}},form.emailNotif)))),
+        e('div',{className:'card elev-sm',style:{marginTop:20}},
+          e('div',{style:{display:'flex',gap:8,alignItems:'center',color:'var(--color-accent)'}},
+            e('span',{className:'card-kicker',style:{margin:0}},'Resumo do chamado')),
+          e('div',{className:'card-title'},form.titulo),
+          e('div',{style:{display:'flex',flexWrap:'wrap',gap:8,margin:'4px 0 6px'}},
+            e('span',{className:'tag tag-neutral'},form.categoria),
+            e('span',{className:'tag tag-outline'},form.setor)),
+          e('p',{className:'card-body'},form.descricao)),
+        e('div',{style:{marginTop:20,display:'flex',gap:10}},
+          e('button',{className:'btn btn-secondary',onClick:reset},'Abrir outro chamado'),
+          !visitante && e('button',{className:'btn btn-primary',onClick:onGoMeus},'Ver "Meus Chamados"'))),
+      e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)'}},
+        e('div',{style:{display:'flex',alignItems:'center',gap:10,padding:'14px 18px',borderBottom:'2px solid var(--color-divider)'}},
+          e('div',{style:{width:32,height:32,background:'var(--color-text)',color:'var(--color-bg)',display:'grid',placeItems:'center'}},e(IcoBot)),
+          e('div',null,
+            e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:15}},'Bot de Triagem'),
+            e('div',{style:{fontSize:11,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},'Análise automatizada · CSU02'))),
+        e('div',{style:{padding:18}},
+          e('div',{className:'card-kicker',style:{marginBottom:8}},'Sugestão de solução'),
+          e('p',{style:{fontSize:14,margin:'0 0 14px'}},'Problemas de acesso a e-mail costumam ser resolvidos redefinindo a senha no ',e('strong',null,'Portal de Identidade'),' e limpando o cache do cliente. Deseja tentar antes de encaminhar a um atendente?'),
+          e('ol',{style:{fontSize:13,paddingLeft:18,margin:'0 0 16px',color:'color-mix(in srgb,var(--color-text) 80%,transparent)'}},
+            e('li',{style:{marginBottom:6}},'Acesse portal.empresa.com.br/senha'),
+            e('li',{style:{marginBottom:6}},'Redefina a senha e aguarde 2 minutos'),
+            e('li',null,'Reabra o cliente de e-mail')),
+          botResposta===null && e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+            e('button',{className:'btn btn-primary btn-block',onClick:()=>setBotResposta('resolveu'),style:{justifyContent:'space-between'}},'A sugestão resolveu meu problema',e(IcoCheck)),
+            e('button',{className:'btn btn-secondary btn-block',onClick:()=>setBotResposta('naoResolveu'),style:{justifyContent:'flex-start'}},'Não resolveu — encaminhar para a equipe')),
+          botResposta==='resolveu' && e('div',{style:{borderLeft:'2px solid var(--color-accent)',background:'var(--color-accent-100)',padding:'12px 14px',fontSize:13}},'Ótimo! O chamado ',e('strong',null,protocolo),' foi marcado como ',e('strong',null,'resolvido pela triagem'),' e encerrado automaticamente. ',e('span',{className:'text-muted'},'(FA01)')),
+          botResposta==='naoResolveu' && e('div',{style:{borderLeft:'2px solid var(--color-neutral-600)',background:'var(--color-neutral-100)',padding:'12px 14px',fontSize:13}},'O chamado ',e('strong',null,protocolo),' permanece aberto e foi enviado para a ',e('strong',null,'fila do setor de TI'),'. Um atendente assumirá em breve. ',e('span',{className:'text-muted'},'(FA02)'))
+        ))));
+
+  return e('div',{className:'fade',style:{maxWidth:1080,margin:'0 auto',padding:'28px 28px 56px'}},
+    Object.keys(errors).length>0 && e('div',{style:{border:'1px solid var(--color-accent)',background:'var(--color-accent-100)',color:'var(--color-accent-800)',padding:'12px 16px',marginBottom:20,display:'flex',gap:10,alignItems:'center',fontSize:14}},
+      e(IcoWarn),'Preencha os campos obrigatórios destacados antes de abrir o chamado.'),
+    e('div',{style:{display:'grid',gridTemplateColumns:'1fr 320px',gap:32,alignItems:'start'}},
+      e('div',null,
+        e('p',{className:'text-muted',style:{fontSize:14,marginTop:0,marginBottom:visitante?16:22}},'Descreva o problema ou a solicitação. Campos com ',e('span',{style:{color:'var(--color-accent)'}},'*'),' são obrigatórios.'),
+        visitante && e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',borderLeft:'3px solid var(--color-neutral-500)',padding:'14px 16px',marginBottom:22}},
+          e('div',{style:{display:'flex',alignItems:'center',gap:8,marginBottom:10}},
+            e('svg',{width:15,height:15,viewBox:'0 0 24 24',fill:'none',stroke:'var(--color-neutral-600)',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'}),e('circle',{cx:12,cy:7,r:4})),
+            e('span',{style:{fontSize:12,fontWeight:600,letterSpacing:'0.04em',textTransform:'uppercase',color:'var(--color-neutral-600)'}},'Acesso como Visitante')),
+          e('p',{style:{fontSize:13,margin:'0 0 12px',color:'color-mix(in srgb,var(--color-text) 75%,transparent)'}},'Como visitante, você receberá as atualizações do chamado por e-mail. Informe abaixo o endereço onde deseja ser notificado.'),
+          e('div',{className:'field',style:{margin:0}},
+            e('label',null,'E-mail para notificações ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+            e('div',{style:{position:'relative'}},
+              e('svg',{style:{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',color:'color-mix(in srgb,var(--color-text) 40%,transparent)',pointerEvents:'none'},width:15,height:15,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('rect',{width:20,height:16,x:2,y:4,rx:2}),e('path',{d:'m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'})),
+              e('input',{className:'input',type:'email',placeholder:'Ex.: seu.email@pessoal.com',value:form.emailNotif,onChange:setField('emailNotif'),style:{paddingLeft:34,...(errors.emailNotif?{borderColor:'var(--color-accent)'}:{})}})),
+            errors.emailNotif && e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:4}},'Informe um e-mail válido para receber as notificações.'))),
+        e('div',{className:'field',style:{marginBottom:18}},
+          e('label',null,'Título do chamado ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+          e('input',{className:'input',placeholder:'Ex.: Não consigo acessar o e-mail corporativo',value:form.titulo,onChange:setField('titulo'),style:errors.titulo?{borderColor:'var(--color-accent)'}:{}}),
+          errors.titulo && e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:5}},'Informe um título para o chamado.')),
+        e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:18}},
+          e('div',{className:'field'},
+            e('label',null,'Categoria ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+            e('select',{className:'input',value:form.categoria,onChange:setField('categoria'),style:errors.categoria?{borderColor:'var(--color-accent)'}:{}},
+              e('option',{value:''},'Selecione…'),
+              CATEGORIAS.map(c=>e('option',{key:c,value:c},c))),
+            errors.categoria && e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:5}},'Selecione uma categoria.')),
+          e('div',{className:'field'},
+            e('label',null,'Setor de destino'),
+            e('select',{className:'input',value:form.setor,onChange:setField('setor')},
+              SETOR_OPCOES.map(o=>e('option',{key:o,value:o},o))))),
+        e('div',{className:'field',style:{marginBottom:18}},
+          e('label',null,'Prioridade'),
+          e('div',{className:'seg',role:'radiogroup'},
+            ['baixa','media','alta'].map(v=>e('label',{key:v,className:'seg-opt',style:{background:form.prioridade===v?'var(--color-accent)':'transparent',color:form.prioridade===v?'var(--color-bg)':'var(--color-text)'}},
+              e('input',{type:'radio',name:'prio',value:v,style:{position:'absolute',opacity:0,pointerEvents:'none'},onChange:setField('prioridade')}),
+              {baixa:'Baixa',media:'Média',alta:'Alta'}[v])))),
+        e('div',{className:'field',style:{marginBottom:18}},
+          e('label',null,'Descrição do problema ',e('span',{style:{color:'var(--color-accent)'}},'*')),
+          e('textarea',{className:'input',placeholder:'Explique o que aconteceu, quando começou e o que já tentou…',value:form.descricao,onChange:setField('descricao'),style:errors.descricao?{borderColor:'var(--color-accent)'}:{}}),
+          errors.descricao && e('div',{style:{fontSize:12,color:'var(--color-accent-700)',marginTop:5}},'Descreva o problema para que possamos atender.')),
+        e('div',{className:'field',style:{marginBottom:24}},
+          e('label',null,'Anexos (opcional)'),
+          e('button',{className:'btn btn-secondary',type:'button',onClick:()=>setAnexos(a=>[...a,{nome:`documento_${a.length+1}.pdf`,tam:(96+a.length*54)+' KB'}]),style:{justifyContent:'flex-start'}},e(IcoPaperclip),'Anexar documento'),
+          anexos.length>0 && e('div',{style:{marginTop:10,display:'flex',flexDirection:'column',gap:6}},
+            anexos.map((a,i)=>e('div',{key:i,style:{display:'flex',alignItems:'center',gap:8,fontSize:13,border:'1px solid var(--color-divider)',padding:'8px 12px',background:'var(--color-surface)'}},
+              e(IcoFile),e('span',{style:{flex:1}},a.nome),e('span',{className:'text-muted'},a.tam))))),
+        e('div',{style:{display:'flex',gap:10}},
+          e('button',{className:'btn btn-primary',onClick:enviar,style:{justifyContent:'space-between',minWidth:180}},'Abrir chamado',e(IcoArrowRight)),
+          e('button',{className:'btn btn-secondary'},'Cancelar'))),
+      e('aside',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:18}},
+        e('div',{className:'card-kicker',style:{marginBottom:10}},'Como funciona'),
+        e('ol',{style:{fontSize:13,lineHeight:1.5,paddingLeft:18,margin:0,color:'color-mix(in srgb,var(--color-text) 82%,transparent)'}},
+          e('li',{style:{marginBottom:10}},'Você registra o chamado com os dados do problema.'),
+          e('li',{style:{marginBottom:10}},e('strong',null,'Bot de Triagem'),' analisa e pode sugerir uma solução imediata.'),
+          e('li',{style:{marginBottom:10}},'Se não resolver, o chamado entra na fila do setor.'),
+          e('li',null,'Você recebe atualizações por e-mail a cada resposta.')),
+        e('hr',{className:'hr'}),
+        e('div',{style:{fontSize:12,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},'Tempo médio de primeira resposta no setor de TI: ',e('strong',{style:{color:'var(--color-text)'}},'18 min')))));
+}
+
+function ScreenMeus({onGoAbrir}){
+  return e('div',{className:'fade',style:{maxWidth:1080,margin:'0 auto',padding:'28px 28px 56px'}},
+    e('div',{style:{display:'flex',alignItems:'flex-end',gap:16,marginBottom:20}},
+      e('div',{style:{flex:1}},
+        e('h3',{style:{margin:0}},'Meus Chamados'),
+        e('p',{className:'text-muted',style:{fontSize:14,margin:'4px 0 0'}},'Acompanhe o andamento das suas solicitações.')),
+      e('button',{className:'btn btn-primary',onClick:onGoAbrir,style:{justifyContent:'space-between'}},'Abrir chamado',e(IcoPlus))),
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14,marginBottom:24}},
+      [{v:4,l:'Total'},{v:'1',l:'Em atendimento',c:'var(--color-accent)'},{v:1,l:'Aguardando'},{v:2,l:'Concluídos'}].map(({v,l,c})=>
+        e('div',{key:l,style:{border:'1px solid var(--color-divider)',padding:'14px 16px'}},
+          e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:28,color:c||'inherit'}},v),
+          e('div',{className:'text-muted',style:{fontSize:12}},l)))),
+    e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)'}},
+      e('table',{className:'table'},
+        e('thead',null,e('tr',null,['Protocolo','Assunto','Setor','Prioridade','Status','Aberto em',''].map(h=>e('th',{key:h},h)))),
+        e('tbody',null,CHAMADOS.map(c=>e('tr',{key:c.id},
+          e('td',{style:{fontFamily:'var(--font-heading)',fontWeight:800}},'#',c.id),
+          e('td',{style:{maxWidth:280}},c.titulo),
+          e('td',{className:'text-muted'},c.setor),
+          e('td',null,e('span',{className:`tag ${prioTag(c.prioridade)}`},c.prioridade)),
+          e('td',null,e('span',{className:`tag ${statusTag(c.status)}`},c.status)),
+          e('td',{className:'text-muted'},c.data),
+          e('td',null,e('a',{href:'#',style:{fontSize:13}},'Ver'))))))));
+}
+
+function ScreenFila({onAbrirDetalhe}){
+  const [busca,setBusca] = useState('');
+  const [filtro,setFiltro] = useState('todos');
+  const [view,setView] = useState('tabela');
+
+  const filtros=['todos','Aberto','Em triagem','Em atendimento'];
+  const lista = FILA
+    .filter(c=>filtro==='todos'||c.status===filtro)
+    .filter(c=>!busca.trim()||c.titulo.toLowerCase().includes(busca.toLowerCase())||String(c.id).includes(busca)||c.solicitante.toLowerCase().includes(busca.toLowerCase()));
+
+  return e('div',{className:'fade',style:{padding:'24px 28px 56px'}},
+    e('div',{style:{display:'flex',flexWrap:'wrap',gap:14,alignItems:'center',marginBottom:18}},
+      e('h3',{style:{margin:0}},'Fila de Atendimento'),
+      e('span',{className:'tag tag-accent',style:{fontSize:12}},FILA.length,' chamados'),
+      e('div',{style:{position:'relative',flex:1,minWidth:240,maxWidth:380}},
+        e(IcoSearch),
+        e('input',{className:'input',placeholder:'Buscar por assunto, nº ou solicitante',value:busca,onChange:ev=>setBusca(ev.target.value),style:{paddingLeft:34}})),
+      e('div',{style:{display:'inline-flex',border:'1px solid var(--color-divider)'}},
+        filtros.map(v=>e('button',{key:v,onClick:()=>setFiltro(v),style:{padding:'6px 14px',fontSize:13,cursor:'pointer',border:'1px solid var(--color-divider)',borderLeftWidth:v==='todos'?'1px':'0',background:filtro===v?'var(--color-accent)':'transparent',color:filtro===v?'var(--color-bg)':'var(--color-text)'}},{todos:'Todos',Aberto:'Aberto','Em triagem':'Em triagem','Em atendimento':'Em atendimento'}[v]))),
+      e('div',{style:{marginLeft:'auto',display:'inline-flex',border:'1px solid var(--color-divider)'}},
+        ['tabela','cartoes'].map(v=>e('button',{key:v,onClick:()=>setView(v),style:{padding:'7px 14px',fontSize:13,fontFamily:'var(--font-heading)',fontWeight:800,cursor:'pointer',border:0,background:view===v?'var(--color-accent)':'transparent',color:view===v?'var(--color-bg)':'var(--color-text)'}},{tabela:'Tabela',cartoes:'Cartões'}[v])))),
+    view==='tabela'
+      ? e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)'}},
+          e('table',{className:'table'},
+            e('thead',null,e('tr',null,['Nº','Assunto','Solicitante','Triagem','Prioridade','Status','Espera',''].map(h=>e('th',{key:h},h)))),
+            e('tbody',null,lista.map(c=>e('tr',{key:c.id},
+              e('td',{style:{fontFamily:'var(--font-heading)',fontWeight:800}},'#',c.id),
+              e('td',{style:{maxWidth:260}},c.titulo),
+              e('td',{className:'text-muted'},c.solicitante),
+              e('td',{className:'text-muted',style:{fontSize:12}},c.triagem),
+              e('td',null,e('span',{className:`tag ${prioTag(c.prioridade)}`},c.prioridade)),
+              e('td',null,e('span',{className:`tag ${statusTag(c.status)}`},c.status)),
+              e('td',{className:'text-muted'},c.tempo),
+              e('td',null,e('button',{className:'btn btn-ghost',onClick:()=>onAbrirDetalhe(c.id),style:{padding:'2px 6px'}},'Abrir')))))))
+      : e('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:16}},
+          lista.map(c=>e('div',{key:c.id,className:'card elev-sm',style:{cursor:'pointer'},onClick:()=>onAbrirDetalhe(c.id)},
+            e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+              e('span',{className:'card-kicker',style:{margin:0}},'#',c.id),
+              e('span',{className:`tag ${prioTag(c.prioridade)}`},c.prioridade)),
+            e('div',{className:'card-title'},c.titulo),
+            e('p',{className:'card-body'},'Solicitante: ',c.solicitante,' · ',c.triagem),
+            e('div',{className:'card-meta',style:{justifyContent:'space-between'}},
+              e('span',{className:`tag ${statusTag(c.status)}`},c.status),
+              e('span',null,'⏱ ',c.tempo))))));
+}
+
+function ScreenDetalhe({chamadoId,onGoFila}){
+  const ativo = FILA.find(c=>c.id===chamadoId) || CHAMADOS.find(c=>c.id===chamadoId) || FILA[4];
+  const [respostas,setRespostas] = useState([
+    {autor:'Bot de Triagem',tipo:'bot',hora:'09:12',texto:'Detectei um problema de autenticação. Sugestão: redefinir a senha no portal de identidade e limpar o cache do cliente de e-mail.'},
+    {autor:'Marina Alves · Solicitante',tipo:'user',hora:'09:31',texto:'Já tentei redefinir a senha, mas continua apresentando "credenciais inválidas" ao entrar.'}
+  ]);
+  const [resposta,setResposta] = useState('');
+  const [detalheAnexos,setDetalheAnexos] = useState([{nome:'captura_erro_email.png',tam:'242 KB'}]);
+  const [dialog,setDialog] = useState(false);
+  const [encerrado,setEncerrado] = useState(false);
+
+  const enviarResposta=()=>{
+    if(!resposta.trim()) return;
+    setRespostas(r=>[...r,{autor:'Você · Atendente',tipo:'atendente',hora:'agora',texto:resposta}]);
+    setResposta('');
+  };
+
+  const barColor = tipo=>tipo==='bot'?'var(--color-accent)':tipo==='atendente'?'var(--color-neutral-600)':'var(--color-neutral-400)';
+
+  return e('div',{className:'fade',style:{maxWidth:1120,margin:'0 auto',padding:'24px 28px 56px'}},
+    e('div',{style:{display:'flex',alignItems:'center',gap:10,fontSize:13,marginBottom:16}},
+      e('button',{className:'btn btn-ghost',onClick:onGoFila,style:{paddingLeft:0}},'← Fila de atendimento'),
+      e('span',{className:'text-muted'},'/ Chamado #',ativo.id)),
+    e('div',{style:{display:'grid',gridTemplateColumns:'1fr 320px',gap:28,alignItems:'start'}},
+      e('div',null,
+        e('div',{style:{display:'flex',flexWrap:'wrap',gap:10,alignItems:'center',marginBottom:6}},
+          e('span',{className:`tag ${prioTag(ativo.prioridade)}`},'Prioridade ',ativo.prioridade),
+          e('span',{className:`tag ${statusTag(ativo.status)}`},ativo.status)),
+        e('h3',{style:{margin:'0 0 4px'}},ativo.titulo),
+        e('p',{className:'text-muted',style:{fontSize:13,margin:'0 0 18px'}},'Aberto por ',ativo.solicitante,' · #',ativo.id,' · há ',ativo.tempo),
+        e('div',{className:'card-kicker',style:{marginBottom:10}},'Histórico de atendimento'),
+        e('div',{style:{display:'flex',flexDirection:'column',gap:12,marginBottom:22}},
+          respostas.map((r,i)=>e('div',{key:i,style:{border:'1px solid var(--color-divider)',borderLeft:`3px solid ${barColor(r.tipo)}`,background:'var(--color-surface)',padding:'12px 16px'}},
+            e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}},
+              e('span',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:13}},r.autor),
+              e('span',{className:'text-muted',style:{fontSize:11}},r.hora)),
+            e('p',{style:{margin:0,fontSize:14}},r.texto)))),
+        encerrado
+          ? e('div',{style:{border:'2px solid var(--color-accent)',background:'var(--color-accent-100)',padding:'16px 18px',display:'flex',gap:12,alignItems:'center'}},
+              e(IcoCheck),
+              e('div',{style:{fontSize:14}},e('strong',null,'Chamado encerrado.'),' Uma notificação por e-mail foi enviada ao solicitante.'))
+          : e('div',null,
+              e('div',{className:'card-kicker',style:{marginBottom:10}},'Responder chamado'),
+              e('textarea',{className:'input',placeholder:'Escreva sua resposta ao solicitante…',value:resposta,onChange:ev=>setResposta(ev.target.value),style:{minHeight:110}}),
+              e('div',{style:{display:'flex',flexWrap:'wrap',gap:10,marginTop:12,alignItems:'center'}},
+                e('button',{className:'btn btn-primary',onClick:enviarResposta,style:{justifyContent:'space-between',minWidth:150}},'Enviar resposta',e(IcoSend)),
+                e('button',{className:'btn btn-secondary',onClick:()=>setDetalheAnexos(a=>[...a,{nome:`anexo_${a.length+1}.pdf`,tam:'118 KB'}]),style:{justifyContent:'flex-start'}},e(IcoPaperclip),'Anexar'),
+                e('button',{className:'btn btn-secondary',style:{justifyContent:'flex-start'}},'Redirecionar'),
+                e('button',{className:'btn btn-secondary',onClick:()=>setDialog(true),style:{marginLeft:'auto',justifyContent:'flex-start',borderColor:'var(--color-accent)',color:'var(--color-accent)'}},'Encerrar chamado')))),
+      e('aside',{style:{display:'flex',flexDirection:'column',gap:18}},
+        e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:16}},
+          e('div',{className:'card-kicker',style:{marginBottom:12}},'Detalhes'),
+          e('div',{style:{display:'flex',flexDirection:'column',gap:10,fontSize:13}},
+            [['Solicitante',ativo.solicitante],['Setor','Tecnologia da Informação'],['Atendente','Você'],['Categoria','Acesso e Contas'],['Espera',ativo.tempo]].map(([k,v])=>
+              e('div',{key:k,style:{display:'flex',justifyContent:'space-between'}},
+                e('span',{className:'text-muted'},k),e('span',null,v))))),
+        e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:16}},
+          e('div',{className:'card-kicker',style:{marginBottom:12}},'Anexos'),
+          e('div',{style:{display:'flex',flexDirection:'column',gap:6}},
+            detalheAnexos.map((a,i)=>e('div',{key:i,style:{display:'flex',alignItems:'center',gap:8,fontSize:13,border:'1px solid var(--color-divider)',padding:'8px 10px',background:'var(--color-bg)'}},
+              e(IcoFile),e('span',{style:{flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},a.nome),e('span',{className:'text-muted'},a.tam))))))),
+    dialog && e('div',{className:'dialog-backdrop',onClick:()=>setDialog(false)},
+      e('div',{className:'dialog',onClick:ev=>ev.stopPropagation()},
+        e('div',{className:'dialog-title'},'Encerrar chamado #',ativo.id,'?'),
+        e('div',{className:'dialog-body'},'Confirme que o problema foi resolvido. O solicitante será notificado por e-mail e o chamado passará ao status ',e('strong',null,'Encerrado'),'.'),
+        e('div',{className:'dialog-actions'},
+          e('button',{className:'btn btn-secondary',onClick:()=>setDialog(false)},'Cancelar'),
+          e('button',{className:'btn btn-primary',onClick:()=>{setDialog(false);setEncerrado(true);}},'Encerrar e notificar')))));
+}
+
+function ScreenAdmin(){
+  const [novoSetor,setNovoSetor] = useState('');
+  const [setores,setSetores] = useState(SETORES_INIT);
+  const addSetor=()=>{
+    const n=novoSetor.trim(); if(!n) return;
+    setSetores(s=>[{nome:n,sigla:n.slice(0,3).toUpperCase(),chefe:'—',usuarios:0,status:'Ativo'},...s]);
+    setNovoSetor('');
+  };
+  const ativos = setores.filter(x=>x.status==='Ativo').length;
+  return e('div',{className:'fade',style:{maxWidth:1120,margin:'0 auto',padding:'24px 28px 56px'}},
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14,marginBottom:26}},
+      [{v:ativos,l:'Setores ativos'},{v:USUARIOS.length,l:'Usuários internos'},{v:'6',l:'Chamados na fila hoje',c:'var(--color-accent)'}].map(({v,l,c})=>
+        e('div',{key:l,style:{border:'1px solid var(--color-divider)',padding:'16px 18px'}},
+          e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:30,color:c||'inherit'}},v),
+          e('div',{className:'text-muted',style:{fontSize:12}},l)))),
+    e('div',{style:{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:12}},
+      e('div',null,e('h3',{style:{margin:0}},'Setores'),e('p',{className:'text-muted',style:{fontSize:13,margin:'4px 0 0'}},'Cadastrar, ativar e inativar setores de atendimento.'))),
+    e('div',{style:{display:'flex',gap:10,marginBottom:16,maxWidth:520}},
+      e('input',{className:'input',placeholder:'Nome do novo setor',value:novoSetor,onChange:ev=>setNovoSetor(ev.target.value),onKeyDown:ev=>ev.key==='Enter'&&addSetor()}),
+      e('button',{className:'btn btn-primary',onClick:addSetor,style:{whiteSpace:'nowrap',justifyContent:'space-between',minWidth:150}},'Cadastrar setor',e(IcoPlus))),
+    e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',marginBottom:36}},
+      e('table',{className:'table'},
+        e('thead',null,e('tr',null,['Sigla','Setor','Chefe do setor','Usuários','Status',''].map(h=>e('th',{key:h},h)))),
+        e('tbody',null,setores.map((x,i)=>e('tr',{key:i},
+          e('td',{style:{fontFamily:'var(--font-heading)',fontWeight:800}},x.sigla),
+          e('td',null,x.nome),
+          e('td',{className:'text-muted'},x.chefe),
+          e('td',null,x.usuarios),
+          e('td',null,e('span',{className:`tag ${x.status==='Ativo'?'tag-accent':'tag-neutral'}`},x.status)),
+          e('td',{style:{textAlign:'right'}},e('a',{href:'#',style:{fontSize:13}},'Gerenciar'))))))),
+    e('h3',{style:{margin:'0 0 4px'}},'Usuários do setor'),
+    e('p',{className:'text-muted',style:{fontSize:13,margin:'0 0 16px'}},'Gerenciar atendentes, chefes e solicitantes.'),
+    e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)'}},
+      e('table',{className:'table'},
+        e('thead',null,e('tr',null,['Nome','E-mail','Perfil','Setor','Status'].map(h=>e('th',{key:h},h)))),
+        e('tbody',null,USUARIOS.map((u,i)=>e('tr',{key:i},
+          e('td',{style:{fontWeight:600}},u.nome),
+          e('td',{className:'text-muted'},u.email),
+          e('td',null,u.perfil),
+          e('td',{className:'text-muted'},u.setor),
+          e('td',null,e('span',{className:`tag ${u.status==='Ativo'?'tag-accent':'tag-neutral'}`},u.status))))))));
+}
+
+function ScreenRelatorio(){
+  return e('div',{className:'fade',style:{maxWidth:1120,margin:'0 auto',padding:'24px 28px 56px'}},
+    e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:18,display:'flex',flexWrap:'wrap',gap:16,alignItems:'flex-end',marginBottom:26}},
+      e('div',{className:'field',style:{minWidth:180}},e('label',null,'Período'),e('select',{className:'input'},e('option',null,'Julho / 2026'),e('option',null,'Junho / 2026'),e('option',null,'Últimos 90 dias'))),
+      e('div',{className:'field',style:{minWidth:180}},e('label',null,'Setor'),e('select',{className:'input'},e('option',null,'Todos os setores'),e('option',null,'Tecnologia da Informação'),e('option',null,'Financeiro'))),
+      e('div',{className:'field',style:{minWidth:150}},e('label',null,'Status'),e('select',{className:'input'},e('option',null,'Todos'),e('option',null,'Encerrado'),e('option',null,'Em atendimento'))),
+      e('div',{style:{display:'flex',gap:10,marginLeft:'auto'}},
+        e('button',{className:'btn btn-secondary',style:{justifyContent:'flex-start'}},e(IcoDownload),'PDF'),
+        e('button',{className:'btn btn-secondary',style:{justifyContent:'flex-start'}},e(IcoDownload),'CSV'))),
+    e('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14,marginBottom:28}},
+      [{v:'1.240',l:'Chamados no período'},{v:'63%',l:'Resolvidos na triagem',c:'var(--color-accent)'},{v:'18 min',l:'1ª resposta (média)'},{v:'4,6',l:'Satisfação (0–5)'}].map(({v,l,c})=>
+        e('div',{key:l,style:{border:'1px solid var(--color-divider)',padding:'16px 18px'}},
+          e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:30,color:c||'inherit'}},v),
+          e('div',{className:'text-muted',style:{fontSize:12}},l)))),
+    e('div',{style:{display:'grid',gridTemplateColumns:'1.3fr 1fr',gap:24,alignItems:'start'}},
+      e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:20}},
+        e('div',{className:'card-kicker',style:{marginBottom:16}},'Chamados por setor'),
+        e('div',{style:{display:'flex',flexDirection:'column',gap:14}},
+          [['Tecnologia da Informação',512,'100%'],['Financeiro',318,'62%'],['Recursos Humanos',214,'42%'],['Infraestrutura',196,'38%']].map(([n,v,w])=>
+            e('div',{key:n},
+              e('div',{style:{display:'flex',justifyContent:'space-between',fontSize:13,marginBottom:5}},e('span',null,n),e('strong',null,v)),
+              e('div',{style:{height:14,background:'var(--color-neutral-200)'}},
+                e('div',{style:{height:'100%',width:w,background:'var(--color-accent)'}})))))),
+      e('div',{style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:20}},
+        e('div',{className:'card-kicker',style:{marginBottom:16}},'Por status'),
+        e('div',{style:{display:'flex',flexDirection:'column',gap:12,fontSize:14}},
+          [['tag-neutral','Encerrado',842],['tag-accent','Em atendimento',218],['tag-accent-2','Em triagem',96],['tag-outline','Aberto',84]].map(([cls,s,n])=>
+            e('div',{key:s,style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+              e('span',{className:`tag ${cls}`},s),e('strong',null,n)))),
+        e('hr',{className:'hr'}),
+        e('p',{className:'text-muted',style:{fontSize:12,margin:0}},'Relatório gerado em 22/07/2026 · exportável em PDF ou CSV.'))));
+}
+
+function ScreenAbrirM({onGoMeusM}){
+  return e('div',{className:'fade',style:{display:'grid',placeItems:'center',padding:32,minHeight:'100%'}},
+    e('div',{style:{width:390,border:'2px solid var(--color-text)',background:'var(--color-bg)',display:'flex',flexDirection:'column',height:820,overflow:'hidden'}},
+      e('div',{style:{height:28,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 16px',fontSize:11,fontWeight:600,borderBottom:'1px solid var(--color-divider)'}},e('span',null,'9:41'),e('span',null,'▲ ⚡ ▮')),
+      e('div',{style:{display:'flex',alignItems:'center',gap:10,padding:'12px 16px',borderBottom:'2px solid var(--color-divider)'}},
+        e('span',{style:{fontSize:20}},'←'),
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:16}},'Abrir Chamado')),
+      e('div',{className:'scr',style:{flex:1,overflow:'auto',padding:'18px 16px'}},
+        e('div',{className:'field',style:{marginBottom:16}},e('label',null,'Título ',e('span',{style:{color:'var(--color-accent)'}},'*')),e('input',{className:'input',placeholder:'Resumo do problema'})),
+        e('div',{className:'field',style:{marginBottom:16}},e('label',null,'Categoria ',e('span',{style:{color:'var(--color-accent)'}},'*')),e('select',{className:'input'},e('option',null,'Selecione…'),e('option',null,'Acesso e Contas'),e('option',null,'Hardware'))),
+        e('div',{className:'field',style:{marginBottom:16}},e('label',null,'Prioridade'),
+          e('div',{className:'seg',style:{width:'100%'}},
+            ['Baixa','Média','Alta'].map(v=>e('label',{key:v,className:'seg-opt',style:{flex:1,justifyContent:'center'}},e('input',{type:'radio',name:'pm',style:{position:'absolute',opacity:0}}),v)))),
+        e('div',{className:'field',style:{marginBottom:16}},e('label',null,'Descrição ',e('span',{style:{color:'var(--color-accent)'}},'*')),e('textarea',{className:'input',placeholder:'Explique o que aconteceu…',style:{minHeight:96}})),
+        e('button',{className:'btn btn-secondary btn-block',style:{justifyContent:'flex-start'}},e(IcoPaperclip),'Anexar documento')),
+      e('div',{style:{padding:'14px 16px',borderTop:'2px solid var(--color-divider)'}},
+        e('button',{className:'btn btn-primary btn-block',onClick:onGoMeusM,style:{justifyContent:'center',marginTop:0}},'Abrir chamado'))));
+}
+
+function ScreenMeusM(){
+  return e('div',{className:'fade',style:{display:'grid',placeItems:'center',padding:32,minHeight:'100%'}},
+    e('div',{style:{width:390,border:'2px solid var(--color-text)',background:'var(--color-bg)',display:'flex',flexDirection:'column',height:820,overflow:'hidden'}},
+      e('div',{style:{height:28,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 16px',fontSize:11,fontWeight:600,borderBottom:'1px solid var(--color-divider)'}},e('span',null,'9:41'),e('span',null,'▲ ⚡ ▮')),
+      e('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px',borderBottom:'2px solid var(--color-divider)'}},
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:16}},'Meus Chamados'),
+        e('div',{style:{width:30,height:30,background:'var(--color-accent)',color:'var(--color-bg)',display:'grid',placeItems:'center',fontSize:12,fontWeight:800}},'MA')),
+      e('div',{className:'scr',style:{flex:1,overflow:'auto',padding:'14px 16px',display:'flex',flexDirection:'column',gap:12}},
+        CHAMADOS.map(c=>e('div',{key:c.id,style:{border:'1px solid var(--color-divider)',background:'var(--color-surface)',padding:14}},
+          e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}},
+            e('span',{className:'card-kicker',style:{margin:0}},'#',c.id),
+            e('span',{className:`tag ${statusTag(c.status)}`},c.status)),
+          e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:15,lineHeight:1.2,marginBottom:8}},c.titulo),
+          e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:12},className:'text-muted'},
+            e('span',null,c.setor),e('span',{className:`tag ${prioTag(c.prioridade)}`},c.prioridade))))),
+      e('div',{style:{padding:'14px 16px',borderTop:'2px solid var(--color-divider)'}},
+        e('button',{className:'btn btn-primary btn-block',style:{justifyContent:'center',marginTop:0}},'+ Abrir novo chamado'))));
+}
+
+/* ══════════════ SHELL ══════════════ */
+function App(){
+  const [screen,setScreen] = useState('login');
+  const [chamadoAtivo,setChamadoAtivo] = useState(2041);
+  const [visitante,setVisitante] = useState(false);
+  const go = id=>setScreen(id);
+  const entrarVisitante = ()=>{setVisitante(true);go('abrir');};
+  const entrarLogin = ()=>{setVisitante(false);go('abrir');};
+
+  const [perf,titulo] = TITULOS[screen]||['',''];
+  const naoLogin = !['login','cadastro','abrir_m','meus_m'].includes(screen);
+
+  function renderScreen(){
+    switch(screen){
+      case 'login':    return e(ScreenLogin,{onEnter:entrarLogin,onGoCadastro:()=>go('cadastro'),onVisitante:entrarVisitante});
+      case 'cadastro': return e(ScreenCadastro,{onGoLogin:()=>go('login')});
+      case 'abrir':    return e(ScreenAbrir,{onGoMeus:()=>go('meus'),visitante:visitante});
+      case 'meus':     return e(ScreenMeus,{onGoAbrir:()=>go('abrir')});
+      case 'fila':     return e(ScreenFila,{onAbrirDetalhe:id=>{setChamadoAtivo(id);go('detalhe');}});
+      case 'detalhe':  return e(ScreenDetalhe,{chamadoId:chamadoAtivo,onGoFila:()=>go('fila')});
+      case 'admin':    return e(ScreenAdmin);
+      case 'relatorio':return e(ScreenRelatorio);
+      case 'abrir_m':  return e(ScreenAbrirM,{onGoMeusM:()=>go('meus_m')});
+      case 'meus_m':   return e(ScreenMeusM);
+      default: return null;
+    }
+  }
+
+  return e('div',{style:{display:'flex',height:'100vh',width:'100%',overflow:'hidden',background:'var(--color-bg)',color:'var(--color-text)'}},
+    /* RAIL */
+    e('aside',{style:{width:246,flexShrink:0,borderRight:'2px solid var(--color-divider)',display:'flex',flexDirection:'column',background:'var(--color-bg)'}},
+      e('div',{style:{padding:'20px 16px 16px',borderBottom:'2px solid var(--color-divider)'}},
+        e('div',{style:{fontFamily:'var(--font-heading)',fontWeight:800,fontSize:19,letterSpacing:'-0.02em',lineHeight:1}},
+          'CENTRAL',e('span',{style:{color:'var(--color-accent)'}},'·'),'ATENDE'),
+        e('div',{style:{fontSize:11,letterSpacing:'0.08em',textTransform:'uppercase',color:'color-mix(in srgb,var(--color-text) 50%,transparent)',marginTop:6}},'Sistema de Atendimento')),
+      e('nav',{className:'scr',style:{flex:1,overflow:'auto',padding:'8px 0'}},
+        NAV_GROUPS.map(grp=>e('div',{key:grp.perfil},
+          e('div',{style:{padding:'14px 16px 6px',fontSize:10,fontWeight:800,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--color-accent)',fontFamily:'var(--font-heading)'}},grp.perfil),
+          grp.items.map(it=>e('button',{key:it.id,onClick:()=>go(it.id),style:{display:'block',width:'100%',textAlign:'left',background:screen===it.id?'var(--color-accent-100)':'transparent',border:0,borderLeft:`2px solid ${screen===it.id?'var(--color-accent)':'transparent'}`,padding:'8px 16px',fontFamily:'var(--font-body)',fontSize:13,fontWeight:screen===it.id?600:400,color:screen===it.id?'var(--color-accent-800)':'color-mix(in srgb,var(--color-text) 72%,transparent)',cursor:'pointer'}},it.nome))))),
+      e('div',{style:{padding:'14px 16px',borderTop:'2px solid var(--color-divider)',fontSize:11,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},'Protótipo navegável · CSU01–CSU16')),
+    /* MAIN */
+    e('main',{style:{flex:1,display:'flex',flexDirection:'column',minWidth:0}},
+      e('header',{style:{display:'flex',alignItems:'center',gap:16,padding:'14px 28px',borderBottom:'2px solid var(--color-divider)',flexShrink:0}},
+        e('div',{style:{flex:1,minWidth:0}},
+          e('div',{style:{fontSize:11,letterSpacing:'0.08em',textTransform:'uppercase',color:'var(--color-accent)'}},perf),
+          e('h4',{style:{margin:'2px 0 0'}},titulo)),
+        naoLogin && e('div',{style:{display:'flex',alignItems:'center',gap:14}},
+          !visitante && e('button',{className:'btn btn-icon btn-secondary',title:'Notificações',style:{position:'relative'}},
+            e(IcoBell),
+            e('span',{style:{position:'absolute',top:5,right:6,width:7,height:7,background:'var(--color-accent)'}})),
+          visitante
+            ? e('div',{style:{display:'flex',alignItems:'center',gap:10}},
+                e('div',{style:{width:34,height:34,background:'var(--color-neutral-500)',color:'var(--color-bg)',display:'grid',placeItems:'center',fontFamily:'var(--font-heading)',fontWeight:800,fontSize:13}},
+                  e('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},e('path',{d:'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'}),e('circle',{cx:12,cy:7,r:4}))),
+                e('div',{style:{lineHeight:1.2}},
+                  e('div',{style:{fontSize:13,fontWeight:600}},'Visitante'),
+                  e('div',{style:{fontSize:11,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},'Acesso sem cadastro')))
+            : e('div',{style:{display:'flex',alignItems:'center',gap:10}},
+                e('div',{style:{width:34,height:34,background:'var(--color-accent)',color:'var(--color-bg)',display:'grid',placeItems:'center',fontFamily:'var(--font-heading)',fontWeight:800,fontSize:13}},'MA'),
+                e('div',{style:{lineHeight:1.2}},
+                  e('div',{style:{fontSize:13,fontWeight:600}},'Marina Alves'),
+                  e('div',{style:{fontSize:11,color:'color-mix(in srgb,var(--color-text) 55%,transparent)'}},'Solicitante'))))),
+      e('div',{className:'scr',style:{flex:1,overflow:'auto'}},renderScreen())));
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+</script>
+</body>
+</html>
